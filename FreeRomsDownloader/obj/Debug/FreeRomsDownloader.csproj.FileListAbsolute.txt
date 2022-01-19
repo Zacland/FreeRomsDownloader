@@ -1,2 +1,11 @@
 C:\Users\crouxel\source\repos\Zacland\FreeRomsDownloader\FreeRomsDownloader\obj\Debug\FreeRomsDownloader.csprojAssemblyReference.cache
 C:\Users\crouxel\source\repos\Zacland\FreeRomsDownloader\FreeRomsDownloader\obj\Debug\FreeRomsDownloader.csproj.CoreCompileInputs.cache
+C:\Users\crouxel\source\repos\Zacland\FreeRomsDownloader\FreeRomsDownloader\bin\Debug\FreeRomsDownloader.exe.config
+C:\Users\crouxel\source\repos\Zacland\FreeRomsDownloader\FreeRomsDownloader\bin\Debug\FreeRomsDownloader.exe
+C:\Users\crouxel\source\repos\Zacland\FreeRomsDownloader\FreeRomsDownloader\bin\Debug\FreeRomsDownloader.pdb
+C:\Users\crouxel\source\repos\Zacland\FreeRomsDownloader\FreeRomsDownloader\bin\Debug\HtmlAgilityPack.dll
+C:\Users\crouxel\source\repos\Zacland\FreeRomsDownloader\FreeRomsDownloader\bin\Debug\HtmlAgilityPack.pdb
+C:\Users\crouxel\source\repos\Zacland\FreeRomsDownloader\FreeRomsDownloader\bin\Debug\HtmlAgilityPack.xml
+C:\Users\crouxel\source\repos\Zacland\FreeRomsDownloader\FreeRomsDownloader\obj\Debug\FreeRomsDownloader.csproj.CopyComplete
+C:\Users\crouxel\source\repos\Zacland\FreeRomsDownloader\FreeRomsDownloader\obj\Debug\FreeRomsDownloader.exe
+C:\Users\crouxel\source\repos\Zacland\FreeRomsDownloader\FreeRomsDownloader\obj\Debug\FreeRomsDownloader.pdb

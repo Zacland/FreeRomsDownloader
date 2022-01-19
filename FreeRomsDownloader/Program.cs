@@ -14,14 +14,23 @@ namespace FreeRomsDownloader
 {
     class Program
     {
-        private static Uri baseUri = new Uri("https://www.planetemu.net");
-        private static string downloadLink = "/php/roms/download.php";
+        // First Page URL (with #ABCDEF...)
+        // https://www.freeroms.com/gba_roms_A.htm
+        // 
+        // https://www.freeroms.com/xxx_roms_yyy.htm
+        // where xxx = machine : gba, genesis, ...
+        // and   yyy = NUM, A, B, C ...
+
+
+        private static Uri baseUri = new Uri("https://www.freeroms.com");
+//        private static string downloadLink = "/php/roms/download.php";
+        private static string downloadLink = "";
 
         // private static string pageLink = "/roms/sinclair-zx-spectrum-tzx?page="; // ZX Spectrum TZX
         //private static string machinePage = "atari-st-demos"; // Atari ST Demos Disk
-        private static string machinePage = "atari-st-games-st"; // Atari ST Game Disk
+        private static string machine = "gba"; // Gameboy Advance
 
-        private static string pageLink = $"/roms/{machinePage}?page=";
+//        private static string pageLink = $"/roms/{machinePage}?page=";
         private static string letters = "0ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
         private static string downloadFolder = "";
@@ -32,39 +41,31 @@ namespace FreeRomsDownloader
         {
             Intro();
 
-            CheckDownloadFolder(machinePage);
+            CheckDownloadFolder(machine);
 
-            foreach (var letter in letters)
+            foreach (var letter1 in letters)
             {
                 var doc = new HtmlDocument();
+                string letter = "";
 
-                doc.LoadHtml(URLRequest(baseUri.AbsoluteUri + pageLink + letter));
+                if (letter1 == '0')
+                {
+                    letter = "NUM";
+                }
+                else
+                {
+                    letter = letter1.ToString();
+                }
+
+                doc.LoadHtml(URLRequest(baseUri.AbsoluteUri + $"{machine}_roms_{letter}.htm"));
 
                 // Il n'y a pas de balise pour identifier les liens ne concernant "que les roms"
                 // alors on se sert des classes "rompair" et "romimpair" pour les retrouver
-                var anchorPairNodes = doc.DocumentNode.SelectNodes("//tr[@class='rompair']/td/a");
-                var anchorImpairNodes = doc.DocumentNode.SelectNodes("//tr[@class='romimpair']/td/a");
+                var anchorNodes = doc.DocumentNode.SelectNodes("//div[@class='rom-tr title']/a");
 
-                if (anchorPairNodes != null)
+                if (anchorNodes != null)
                 {
-                    foreach (var anchorNode in anchorPairNodes)
-                    {
-                        if ((anchorNode.InnerText.Trim() != "") && (anchorNode.GetAttributeValue("href", "").Trim() != ""))
-                        {
-                            //Console.WriteLine($"{anchorNode.InnerText.Trim()}§{anchorNode.GetAttributeValue("href", "").Trim()}");
-                            totalAnchors.Add(new Enreg
-                            {
-                                name = anchorNode.InnerText.Trim(),
-                                path = anchorNode.GetAttributeValue("href", "").Trim(),
-                                alreadyDownloaded = false,
-                            });
-                        }
-                    }
-                }
-
-                if (anchorImpairNodes != null)
-                {
-                    foreach (var anchorNode in anchorImpairNodes)
+                    foreach (var anchorNode in anchorNodes)
                     {
                         if ((anchorNode.InnerText.Trim() != "") && (anchorNode.GetAttributeValue("href", "").Trim() != ""))
                         {
@@ -98,6 +99,10 @@ namespace FreeRomsDownloader
                 title = enreg.name;
                 path = enreg.path;
 
+                // Download URL
+                // https://www.freeroms.com/dl_roms/rom_download_tr.php?title=ace_combat_advance&system=Gameboy_Advance&game_id=25075
+                // base + /dl_roms/rom_download_tr.php?title=ace_combat_advance&system=Gameboy_Advance&game_id=25075
+
                 bool ok = DownloadUrl(baseUri.AbsoluteUri + path, $@"{downloadFolder}\{title}.zip");
 
                 if (ok)
@@ -123,7 +128,7 @@ namespace FreeRomsDownloader
             Console.ForegroundColor = ConsoleColor.Yellow;
 
             Console.WriteLine("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
-            Console.WriteLine("* PlanetEmu Downloader v0.1 *");
+            Console.WriteLine("* FreeRoms Downloader v0.1  *");
             Console.WriteLine("*-*-*-*-*-*-*-*-*-*-*-*-*-*-*");
         }
 
@@ -175,9 +180,11 @@ namespace FreeRomsDownloader
             {
                 doc.LoadHtml(urlRequest);
 
-                var postNodes = doc.DocumentNode.SelectNodes("//input[@name='id']");
+                var postNodes = doc.DocumentNode.SelectNodes("//div[@class='rom-tr title']/a");
 
                 string fileId = postNodes[0].GetAttributeValue("value", "").Trim();
+
+                string urlToDownload = postNodes[0].GetAttributeValue("href", "").Trim();
 
                 try
                 {
@@ -185,7 +192,7 @@ namespace FreeRomsDownloader
                     myWebClient.PostParam = new NameValueCollection();
                     myWebClient.PostParam["id"] = fileId;
                     // Concatenate the domain with the Web resource filename.
-                    myStringWebResource = new Uri(baseUri.AbsoluteUri + downloadLink);
+                    myStringWebResource = new Uri(baseUri.AbsoluteUri + urlToDownload);
 
                     myWebClient.DownloadFile(myStringWebResource, fileName);
 
