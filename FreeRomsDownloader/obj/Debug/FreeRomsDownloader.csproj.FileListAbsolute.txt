@@ -1,0 +1,2 @@
+C:\Users\crouxel\source\repos\Zacland\FreeRomsDownloader\FreeRomsDownloader\obj\Debug\FreeRomsDownloader.csprojAssemblyReference.cache
+C:\Users\crouxel\source\repos\Zacland\FreeRomsDownloader\FreeRomsDownloader\obj\Debug\FreeRomsDownloader.csproj.CoreCompileInputs.cache
